@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -20,7 +21,7 @@ public class JwtUtil {
 
     public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
+        claims.put("roles", List.of(role));  // Change to "roles" as List
 
         return Jwts.builder()
                 .setClaims(claims)
