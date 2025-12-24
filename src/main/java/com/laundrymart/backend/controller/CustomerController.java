@@ -10,21 +10,28 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
-@PreAuthorize("hasRole('CUSTOMER')")
+@PreAuthorize("hasRole('CUSTOMER')")  // Only users with role CUSTOMER can access
 public class CustomerController {
+
     @Autowired
     private OrderService orderService;
 
+    /**
+     * POST /customer/orders
+     * Customer places a new order
+     * Body: { "details": "5 shirts, 2 pants" }
+     */
     @PostMapping("/orders")
     public Order createOrder(@RequestBody Order order) {
-        // Set customer from auth context
         return orderService.createOrder(order);
     }
 
-    @GetMapping("/orders/{customerId}")
-    public List<Order> getOrders(@PathVariable Long customerId) {
-        return orderService.getOrdersByCustomer(customerId);
+    /**
+     * GET /customer/orders
+     * Customer gets their own orders (no need for customerId in path)
+     */
+    @GetMapping("/orders")
+    public List<Order> getMyOrders() {
+        return orderService.getOrdersByCustomer();
     }
-
-    // Add track order, edit profile
 }
