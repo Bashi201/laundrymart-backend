@@ -3,6 +3,7 @@ package com.laundrymart.backend.service;
 import com.laundrymart.backend.entity.User;
 import com.laundrymart.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,21 @@ public class UserService {
     }
 
     // Add methods for update, delete, findById, etc.
+
+    public ResponseEntity<?> deleteUser(Long userId) {
+        var userOpt = userRepository.findById(userId);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOpt.get();
+
+        if ("ADMIN".equals(user.getRole())) {
+            return ResponseEntity.status(403).body("Cannot delete admin users");
+        }
+
+        userRepository.delete(user);
+        return ResponseEntity.ok().body("User deleted successfully");
+    }
 }

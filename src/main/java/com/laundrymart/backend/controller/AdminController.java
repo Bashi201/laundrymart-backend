@@ -6,6 +6,7 @@ import com.laundrymart.backend.entity.Order;
 import com.laundrymart.backend.service.UserService;
 import com.laundrymart.backend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,11 @@ public class AdminController {
             throw new IllegalArgumentException("Status is required");
         }
         return orderService.updateStatus(orderId, status.trim());
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        return userService.deleteUser(userId);
     }
 
     // Similar for riders, orders management, assign tasks
