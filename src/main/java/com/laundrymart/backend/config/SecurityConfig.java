@@ -47,13 +47,15 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
-                "https://my-laundrymart.vercel.app",
-                "https://my-laundrymart-p8osl4683-bhashithas-projects-e9db4c15.vercel.app",  // Add your current Vercel preview URL
-                "http://localhost:5173"  // Local dev
+
+        // This allows any Vercel preview/subdomain like my-laundrymart-*.vercel.app
+        config.setAllowedOriginPatterns(List.of(
+                "https://my-laundrymart*.vercel.app",
+                "http://localhost:5173"  // Keep for local dev
         ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));  // Or explicitly: "Authorization", "Content-Type", "Accept", "Origin"
+        config.setAllowedHeaders(List.of("*"));  // Already good
         config.setExposedHeaders(List.of("Authorization"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
